@@ -8,17 +8,23 @@
 //https://www.chaijs.com/plugins/chai-json-schema/
 //https://developer.mozilla.org/pt-PT/docs/Web/HTTP/Status (http codes)
 
-const app =  require('../src/index.js');
 
-const assert = require('assert');
-const chai = require('chai')
-const chaiHttp = require('chai-http');
-const chaiJson = require('chai-json-schema');
+
+import assert from 'assert';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import chaiJson from 'chai-json-schema';
+import { PORT } from '../src/app.js';
+
+var app = `http://localhost:${PORT}`
+
+console.log(app)
 
 chai.use(chaiHttp);
 chai.use(chaiJson);
 
 const expect = chai.expect;
+
 
 //Define o minimo de campos que o usuário deve ter. Geralmente deve ser colocado em um arquivo separado
 const userSchema = {
@@ -73,7 +79,7 @@ describe('Testes da aplicaçao',  () => {
 
     it('deveria criar o usuario raupp', function (done) {
         chai.request(app)
-        .post('/user')
+        .post('/signup')
         .send({nome: "raupp", email: "jose.raupp@devoz.com.br", idade: 35})
         .end(function (err, res) {
             expect(err).to.be.null;

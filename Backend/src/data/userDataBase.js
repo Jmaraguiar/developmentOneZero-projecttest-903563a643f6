@@ -1,7 +1,7 @@
 import { useConnection } from "./BaseDataBase.js"
 
 
-export class userDataBase{
+export class UserDataBase{
     insert = (input)=> {
         const sql = `INSERT INTO users (id,name,email,age) VALUES (?,?,?,?)`
         useConnection.run(sql,input,(err)=>{
@@ -45,9 +45,9 @@ export class userDataBase{
     }
 }
 
-const db = new userDataBase()
-const id = 'asdasd-asddbabh-14fce23-ef3t45t3'
+// const db = new userDataBase()
+// const id = 'asdasd-asddbabh-14fce23-ef3t45t3'
 
 // db.insert(['asdasd-asddbabh-14fce23-ef3t45t3','João','jm@gmail.com',24])
 // db.deleteItens([],id)
-db.getItens([])
+// db.getItens([])
