@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Ozmap Test
+  description: |-
+    API Rest de gerenciamento de usuários
+  version: 1.0.11
+servers:
+  - url: http://localhost:3003/
+tags:
+  - name: Users
+    description: Endpoints de gerenciamento dos usuários
+paths:
+  /users/all:
+    get:
+      tags:
+        - Users
+      summary: Retorna todos os usuários
+      responses:
+        '200':
+          description: Sucesso
+  /user/João:
+    get:
+      tags:
+        - Users
+      summary: ( /user/:nome ) Retorna um usuário pelo nome passado como parâmetro
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: Usuário não encontrado
+  /signup:
+    post:
+      tags:
+        - Users
+      summary: 'Cria um novo usuário'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        '201':
+          description: Usuário Criado
+        '400':
+          description: Faltando informação
+        '403':
+          description: Necessário ter no mínimo 18 anos para se cadastrar
+        '409':
+          description: Email já cadastrado
+  /update:
+    put:
+      tags:
+        - Users
+      summary: Altera informações de um usuário já existente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userUpdate'
+        required: true
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: Usuário não encontrado
+  /del/João:
+    delete:
+      tags:
+        - Users
+      summary: ( /del/:nome ) Deleta um usuário pelo nome passado como parâmetro
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: Usuário não encontrado
+        
+  
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: João
+        email:
+          type: string
+          example: joao@devoz.com.br
+        idade:
+          type: number
+          example: 24
+      xml:
+        name: user
+    userUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          example: dc797a55-cc99-4439-b2f4-d2a025a6b673
+        nome:
+          type: string
+          example: Maria
+        email:
+          type: string
+          example: Mari@devoz.com.br
+        idade:
+          type: number
+          example: 24
+      xml:
+        name: user
+    

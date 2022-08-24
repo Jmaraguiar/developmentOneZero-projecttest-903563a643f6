@@ -61,14 +61,37 @@ export class UserBusiness {
             throw new CustomError(400,'Nome de usuário não inserido')
         }
 
-        const user = userDatabase.getItemByName(name)
-
-        await userDatabase.deleteItens(name)
+        const user = await userDatabase.getItemByName(name)
+        console.log(user)
 
         if(!user){
             throw new CustomError(404,'User not found')
         }
+
+        await userDatabase.deleteItens(name)
+
         return user
+    }
+
+    updateUserById = async (input)=>{
+        const {id,nome,email,idade} = input
+        if(!id || !nome || !email || ! idade){
+            throw new CustomError(400,'Faltando informações')
+        }
+
+        console.log(input)
+
+        const user = await userDatabase.getItemById(id)
+
+        if(!user){
+            throw new CustomError(404,'User not found')
+        }
+
+        await userDatabase.updateItemById(input)
+
+        const updatedUser = userDatabase.getItemByName(nome)
+        
+        return updatedUser
     }
 
     getAllUsers = async ()=>{
