@@ -14,6 +14,7 @@ import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import chaiJson from 'chai-json-schema';
+import { get } from 'http';
 import { PORT } from '../src/app.js';
 
 var app = `http://localhost:${PORT}`
@@ -32,6 +33,9 @@ const userSchema = {
     type: "object",
     required: ['nome', 'email', 'idade'],
     properties: {
+        id: {
+            type: 'string'
+        },
         nome: {
             type: 'string'
         },
@@ -109,6 +113,26 @@ describe('Testes da aplicaçao',  () => {
             expect(res.body).to.be.jsonSchema(userSchema);
             done();
         });
+    });
+
+    it('as informações do usuário mudaram', function (done) {
+        // O teste deve sempre retornar exatamente os dados de 'newNome','newEmail' e 'newIdade'
+
+        const newNome = 'Maria'
+        const newEmail = 'Maria20@devoz.com.br'
+        const newIdade = 25
+        
+        chai.request(app)
+        .put('/update')
+        .send({id: 'dc797a55-cc99-4439-b2f4-d2a025a6b673' ,nome: newNome, email: newEmail, idade: newIdade})
+        .end(function (err, res){
+            expect(err).to.be.null;
+            expect(res).to.have.status(200);
+            expect(res.body.nome).to.be.equal(newNome)
+            expect(res.body.email).to.be.equal(newEmail)
+            expect(res.body.idade).to.be.equal(newIdade)
+            done();
+        })
     });
 
     it('deveria excluir o usuario raupp', function (done) {

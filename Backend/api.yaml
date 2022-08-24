@@ -48,6 +48,22 @@ paths:
           description: Necessário ter no mínimo 18 anos para se cadastrar
         '409':
           description: Email já cadastrado
+  /update:
+    put:
+      tags:
+        - Users
+      summary: Altera informações de um usuário já existente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userUpdate'
+        required: true
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: Usuário não encontrado
   /del/João:
     delete:
       tags:
@@ -71,6 +87,23 @@ components:
         email:
           type: string
           example: joao@devoz.com.br
+        idade:
+          type: number
+          example: 24
+      xml:
+        name: user
+    userUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          example: dc797a55-cc99-4439-b2f4-d2a025a6b673
+        nome:
+          type: string
+          example: Maria
+        email:
+          type: string
+          example: Mari@devoz.com.br
         idade:
           type: number
           example: 24

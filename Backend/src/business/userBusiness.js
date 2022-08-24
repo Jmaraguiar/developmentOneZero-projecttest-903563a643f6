@@ -73,20 +73,25 @@ export class UserBusiness {
         return user
     }
 
-    updateUserByid = async (input)=>{
+    updateUserById = async (input)=>{
         const {id,nome,email,idade} = input
         if(!id || !nome || !email || ! idade){
             throw new CustomError(400,'Faltando informações')
         }
 
+        console.log(input)
+
         const user = await userDatabase.getItemById(id)
-        console.log(user)
 
         if(!user){
             throw new CustomError(404,'User not found')
         }
 
-        return user
+        await userDatabase.updateItemById(input)
+
+        const updatedUser = userDatabase.getItemByName(nome)
+        
+        return updatedUser
     }
 
     getAllUsers = async ()=>{

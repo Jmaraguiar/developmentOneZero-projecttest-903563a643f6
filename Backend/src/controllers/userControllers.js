@@ -39,15 +39,17 @@ export class UserController {
 
     updateUserbyId = async (ctx,next)=>{
         try {
+            console.log('update user')
             const {id,nome,email,idade} = ctx.request.body
             const input = {
+                id,
                 nome,
                 email,
                 idade
             }
-            const res = await userBusiness.updateUserByid(input)
+            const res = await userBusiness.updateUserById(input)
             ctx.body = res
-            ctx.status = 201
+            ctx.status = 200
         } catch (error) {
             ctx.body = {message: error.message}
             ctx.status = error.statusCode || 500
@@ -72,8 +74,7 @@ export class UserController {
         
             const name = ctx.request.params.name
             const res = await userBusiness.getUserByName(name)
-            console.log({nome: res.nome, email: res.email,idade: res.idade})
-            ctx.body = {nome: res.nome, email: res.email,idade: res.idade}
+            ctx.body = res
             ctx.status = 200
 
         } catch (error) {
@@ -88,7 +89,7 @@ export class UserController {
             const name = ctx.request.params.name
             const res = await userBusiness.deleteUserByName(name)
         
-            ctx.body = {nome: res.nome, email: res.email,idade: res.idade}
+            ctx.body = res
             ctx.status = 200
         } catch (error) {
             ctx.body = {message: error.message}

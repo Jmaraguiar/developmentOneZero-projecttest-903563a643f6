@@ -34,11 +34,11 @@ export class UserDataBase{
 
     updateItemById = async(input)=>{
         const {id,nome,email,idade} = input
-        await Database.connection.raw(
-            `UPDATE users SET nome = ${nome}, email = ${email}, idade = ${idade} WHERE id = ${id}`
+        const updatedUser = await Database.connection.raw(
+            `UPDATE users SET nome = '${nome}', email = '${email}', idade = ${idade} WHERE id = '${id}'`
         )
 
-         
+         return updatedUser
     }
 
     getItemByName = async(name)=>{
