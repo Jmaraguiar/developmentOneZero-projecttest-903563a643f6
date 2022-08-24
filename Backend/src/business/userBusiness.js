@@ -39,10 +39,42 @@ export class UserBusiness {
         //inserir no banco de dados
         await userDatabase.insert(newInput)
 
-        const user = await userDatabase.getItens()
-        // console.log(user)
-
         //retornar resposta
         return "Usuário criado com sucesso"
+    }
+
+    getUserByName = async (name)=>{
+        if(!name){
+            throw new CustomError(400,'Nome de usuário não inserido')
+        }
+
+        const user = await userDatabase.getItemByName(name)
+        if(!user){
+            throw new CustomError(404,'User not found')
+        }
+        
+        return user
+    }
+
+    deleteUserByName = async (name)=>{
+        if(!name){
+            throw new CustomError(400,'Nome de usuário não inserido')
+        }
+
+        const user = userDatabase.getItemByName(name)
+
+        await userDatabase.deleteItens(name)
+
+        if(!user){
+            throw new CustomError(404,'User not found')
+        }
+        return user
+    }
+
+    getAllUsers = async ()=>{
+        
+        const users = await userDatabase.getItens()
+        
+        return users
     }
 }

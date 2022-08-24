@@ -23,24 +23,31 @@ export class UserDataBase{
          return user[0]
     }
 
+    getItemByName = async(name)=>{
+        const user = await Database.connection()
+         .select('*')
+         .from('users')
+         .where({nome: name})
+
+         return user[0]
+    }
+
     getItens = async ()=>{
 
         const users = await Database.connection()
          .select('*')
          .from('users')
 
-         console.log(users)
+         return users
 
     }
 
-    deleteItens = (id)=>{
-
+    deleteItens = async (name)=>{
+        await Database.connection()
+         .where({nome: String(name)})
+         .delete()
+         .from('users')
+         
     }
 }
 
-// const db = new userDataBase()
-// const id = 'asdasd-asddbabh-14fce23-ef3t45t3'
-
-// db.insert(['asdasd-asddbabh-14fce23-ef3t45t3','João','jm@gmail.com',24])
-// db.deleteItens([],id)
-// db.getItens([])

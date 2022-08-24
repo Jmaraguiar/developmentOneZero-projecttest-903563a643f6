@@ -68,7 +68,7 @@ describe('Testes da aplicaçao',  () => {
 
     it('deveria ser uma lista vazia de usuarios', function (done) {
         chai.request(app)
-        .get('/users')
+        .get('/users/empty')
         .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
@@ -93,9 +93,9 @@ describe('Testes da aplicaçao',  () => {
         chai.request(app)
         .get('/user/naoExiste')
         .end(function (err, res) {
-            expect(err.response.body.error).to.be.equal('User not found'); //possivelmente forma errada de verificar a mensagem de erro
+            expect(err).to.be.null;
+            expect(res.body.error).to.be.equal('User not found'); //possivelmente forma errada de verificar a mensagem de erro
             expect(res).to.have.status(404);
-            expect(res.body).to.be.jsonSchema(userSchema);
             done();
         });
     });
@@ -113,7 +113,7 @@ describe('Testes da aplicaçao',  () => {
 
     it('deveria excluir o usuario raupp', function (done) {
         chai.request(app)
-        .delete('/user/raupp')
+        .delete('/del/raupp')
         .end(function (err, res) {
             expect(err).to.be.null;
             expect(res).to.have.status(200);
@@ -127,15 +127,14 @@ describe('Testes da aplicaçao',  () => {
         .get('/user/raupp')
         .end(function (err, res) {
             expect(err).to.be.null;
-            expect(res).to.have.status(200);
-            expect(res.body).to.be.jsonSchema(userSchema);
+            expect(res).to.have.status(404);
             done();
         });
     });
 
     it('deveria ser uma lista com pelomenos 5 usuarios', function (done) {
         chai.request(app)
-        .get('/users')
+        .get('/users/all')
         .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
