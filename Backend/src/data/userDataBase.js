@@ -23,6 +23,24 @@ export class UserDataBase{
          return user[0]
     }
 
+    getItemById = async(id)=>{
+        const user = await Database.connection()
+         .select('*')
+         .from('users')
+         .where({id: id})
+
+         return user[0]
+    }
+
+    updateItemById = async(input)=>{
+        const {id,nome,email,idade} = input
+        await Database.connection.raw(
+            `UPDATE users SET nome = ${nome}, email = ${email}, idade = ${idade} WHERE id = ${id}`
+        )
+
+         
+    }
+
     getItemByName = async(name)=>{
         const user = await Database.connection()
          .select('*')
@@ -47,7 +65,7 @@ export class UserDataBase{
          .where({nome: String(name)})
          .delete()
          .from('users')
-         
+        
     }
 }
 
