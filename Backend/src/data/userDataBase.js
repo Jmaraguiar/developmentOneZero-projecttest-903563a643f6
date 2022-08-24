@@ -1,46 +1,39 @@
-import { useConnection } from "./BaseDataBase.js"
+import { CustomError } from "../business/services/CustomError.js"
+import { Database } from "./Database.js"
 
 
 export class UserDataBase{
-    insert = (input)=> {
-        const sql = `INSERT INTO users (id,name,email,age) VALUES (?,?,?,?)`
-        useConnection.run(sql,input,(err)=>{
-            if(err) return console.error(err.message)
-
-            console.log("Row created")
-        })
-
-        // useConnection.close((err)=>{
-        //     if(err) return console.error(err.message)
-        // })
+    insert = async (input)=> {
+        const {id,nome,email,idade} = input
+        await Database.connection()
+         .insert({
+            id,
+            nome,
+            email,
+            idade
+         }).into('users')
     }
 
-    getItens = (input)=>{
-        const sql = `SELECT * FROM users`
-        useConnection.all(sql,input,(err,rows)=>{
-            if(err) return console.error(err.message)
+    getItemByEmail = async(email)=>{
+        const user = await Database.connection()
+         .select('*')
+         .from('users')
+         .where({email: email})
 
-            console.log(rows)
-            
-        })
+         return user[0]
+    }
 
-        // useConnection.close((err)=>{
-        //     if(err) return console.error(err.message)
-        // })
+    getItens = async ()=>{
+
+        const users = await Database.connection()
+         .select('*')
+         .from('users')
+
+         console.log(users)
+
     }
 
     deleteItens = (id)=>{
-        const sql = `DELETE FROM users WHERE id = '${id}'`
-        console.log(sql)
-        useConnection.run(sql,[],(err)=>{
-            if(err) return console.error(err.message)
-
-            console.log("Row deleted")
-        })
-
-        // useConnection.close((err)=>{
-        //     if(err) return console.error(err.message)
-        // })
 
     }
 }

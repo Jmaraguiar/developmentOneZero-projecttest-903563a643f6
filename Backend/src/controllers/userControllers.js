@@ -1,4 +1,4 @@
-import { koa, PORT } from "../app.js";
+import { PORT } from "../app.js";
 import { UserBusiness } from "../business/userBusiness.js";
 
 const userBusiness = new UserBusiness
@@ -18,8 +18,20 @@ export class UserController {
         ctx.body = `Seu servidor esta rodando em http://localhost:${PORT}`; //http://lotcalhost:3000/
     }
 
-    insertUser = (ctx,next)=>{
-        const {nome,email,idade} = ctx.request.body
-        console.log(nome,email,idade)
+    insertUser = async (ctx,next)=>{
+        try {
+            const {nome,email,idade} = ctx.request.body
+            const input = {
+                nome,
+                email,
+                idade
+            }
+            const res = await userBusiness.insertUser(input)
+            ctx.body = res
+            ctx.status = 201
+        } catch (error) {
+            ctx.body = {message: error.message}
+            ctx.status = error.statusCode || 500
+        }
     }
 }
