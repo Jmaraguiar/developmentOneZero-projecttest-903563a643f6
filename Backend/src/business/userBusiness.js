@@ -62,7 +62,6 @@ export class UserBusiness {
         }
 
         const user = await userDatabase.getItemByName(name)
-        console.log(user)
 
         if(!user){
             throw new CustomError(404,'User not found')
@@ -79,7 +78,9 @@ export class UserBusiness {
             throw new CustomError(400,'Faltando informações')
         }
 
-        console.log(input)
+        if( idade < 18){
+            throw new CustomError(403,'Usuários não podem ter menos de 18 anos')
+        }
 
         const user = await userDatabase.getItemById(id)
 
