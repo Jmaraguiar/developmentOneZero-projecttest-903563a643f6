@@ -20,6 +20,8 @@ top: 0px;
 
 h1{
     font-size: 50px;
+    position: relative;
+    top: 10px;
 }
 
 div{
