@@ -31,7 +31,7 @@ const expect = chai.expect;
 const userSchema = {
     title: "Schema do Usuario, define como é o usuario, linha 24 do teste",
     type: "object",
-    required: ['nome', 'email', 'idade'],
+    required: ['id','nome', 'email', 'idade'],
     properties: {
         id: {
             type: 'string'
