@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { goToMainPage } from "../../router/cordinator"
+import { goToMainPage } from "../router/cordinator"
 
 export const UserList = (props)=>{
     
