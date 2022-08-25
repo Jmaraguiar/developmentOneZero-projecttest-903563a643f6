@@ -47,7 +47,7 @@ button{
 }
 `
 
-export const FormDisplay = styled.div`
+export const FormDisplay = styled.form`
 display: flex;
 gap: 10px;
 flex-direction: column;
