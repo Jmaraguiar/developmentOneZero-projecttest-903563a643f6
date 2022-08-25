@@ -2,7 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import YAML from 'yamljs';
 import { koaSwagger } from 'koa2-swagger-ui';
-import cors from '@koa/cors'
+import cors from 'koa2-cors'
 
 const spec = YAML.load('./api.yaml')
 
@@ -13,10 +13,14 @@ export var router = new Router();
 
 router.get('/docs', koaSwagger({ routePrefix: false, swaggerOptions: { spec } }));
 
+const corsOptions = {
+  origin: '*'
+}
+
 koa
   .use(router.routes())
   .use(router.allowedMethods())
-  .use(cors())
+  .use(cors(corsOptions))
   
 const server = koa.listen(PORT);
 

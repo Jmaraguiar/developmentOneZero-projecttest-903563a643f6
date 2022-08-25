@@ -29,6 +29,9 @@ export class UserController {
                 idade
             }
             const res = await userBusiness.insertUser(input)
+            ctx.set('Access-Control-Allow-Origin', '*'); 
+            ctx.set('Access-Control-Allow-Headers', 'Origin, X -Requested-With, Content-Type, Accept'); 
+            ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
             ctx.body = res
             ctx.status = 201
         } catch (error) {
@@ -48,6 +51,9 @@ export class UserController {
                 idade
             }
             const res = await userBusiness.updateUserById(input)
+            ctx.set('Access-Control-Allow-Origin', '*'); 
+            ctx.set('Access-Control-Allow-Headers', 'Origin, X -Requested-With, Content-Type, Accept'); 
+            ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
             ctx.body = res
             ctx.status = 200
         } catch (error) {
@@ -60,6 +66,9 @@ export class UserController {
         try {
            
             const response = await userBusiness.getAllUsers()
+            ctx.set('Access-Control-Allow-Origin', '*'); 
+            ctx.set('Access-Control-Allow-Headers', 'Origin, X -Requested-With, Content-Type, Accept'); 
+            ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');  
             ctx.body = {response,total: response.length}
             ctx.status = 200
 
@@ -74,6 +83,9 @@ export class UserController {
         
             const name = ctx.request.params.name
             const res = await userBusiness.getUserByName(name)
+            ctx.set('Access-Control-Allow-Origin', '*'); 
+            ctx.set('Access-Control-Allow-Headers', 'Origin, X -Requested-With, Content-Type, Accept'); 
+            ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
             ctx.body = res
             ctx.status = 200
 
@@ -88,7 +100,9 @@ export class UserController {
 
             const name = ctx.request.params.name
             const res = await userBusiness.deleteUserByName(name)
-        
+            ctx.set('Access-Control-Allow-Origin', '*'); 
+            ctx.set('Access-Control-Allow-Headers', 'Origin, X -Requested-With, Content-Type, Accept'); 
+            ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
             ctx.body = res
             ctx.status = 200
         } catch (error) {
