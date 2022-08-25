@@ -32,7 +32,7 @@ export class UserController {
             ctx.body = res
             ctx.status = 201
         } catch (error) {
-            ctx.body = {message: error.message}
+            ctx.body = {error: error.message}
             ctx.status = error.statusCode || 500
         }
     }

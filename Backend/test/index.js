@@ -91,7 +91,30 @@ describe('Testes da aplicaçao',  () => {
             done();
         });
     });
-    //...adicionar pelo menos mais 5 usuarios. se adicionar usuario menor de idade, deve dar erro. Ps: não criar o usuario naoExiste
+
+    it('deveria retornar mensagem de erro ao criar o usuario raupp por ja existir usuário', function (done) {
+        chai.request(app)
+        .post('/signup')
+        .send({nome: "raupp", email: "jose.raupp@devoz.com.br", idade: 35})
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res).to.have.status(409);
+            expect(res.body.error).to.be.equal("Este email ja está cadastrado")
+            done();
+        });
+    });
+    
+    it('deveria impedir de criar o usuario Donnald por causa da idade', function (done) {
+        chai.request(app)
+        .post('/signup')
+        .send({nome: "Donnald", email: "duck@devoz.com.br", idade: 10})
+        .end(function (err, res) {
+            expect(err).to.be.null;
+            expect(res).to.have.status(403);
+            expect(res.body.error).to.be.equal("Necessário ter no mínimo 18 anos para se cadastrar")
+            done();
+        });
+    });
 
     it('o usuario naoExiste não existe no sistema', function (done) {
         chai.request(app)
