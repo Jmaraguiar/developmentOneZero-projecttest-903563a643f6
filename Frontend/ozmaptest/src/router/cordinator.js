@@ -2,8 +2,8 @@ export const goToUserList = (nav)=> {
     nav(`/userlist`)
 }
 
-export const goToUserUpdate = (nav)=> {
-    nav(`/userUpdate`)
+export const goToUserUpdate = (nav,id)=> {
+    nav(`/userUpdate/${id}`)
 }
 
 export const goToMainPage = (nav)=> {

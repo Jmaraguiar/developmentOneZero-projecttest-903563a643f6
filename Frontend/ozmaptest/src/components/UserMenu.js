@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import { goToUserUpdate } from '../router/cordinator'
 
 const Display = styled.div`
     width: 95%;
@@ -55,6 +57,7 @@ const Display = styled.div`
     `
 
 export const UserMenu = (props)=>{
+    const nav = useNavigate()
 
     return(
         <Display>
@@ -64,7 +67,7 @@ export const UserMenu = (props)=>{
                 <p>idade: {props.age} anos</p>
             </Info>
             <Menu>
-                <button className="edit">Editar</button>
+                <button className="edit" onClick={()=>goToUserUpdate(nav,props.id)}>Editar</button>
                 <button className="del" onClick={()=>props.delUser(props.name)}>Excluir</button>
             </Menu>
         </Display>

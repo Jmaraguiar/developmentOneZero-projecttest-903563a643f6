@@ -57,7 +57,7 @@ export const UserList = (props)=>{
                     <h1>Ozmap</h1>
                     <h3>Cadastro</h3>
                 </div>
-                <button onClick={()=>goToMainPage(nav)}>Voltar</button>
+                <button onClick={()=>goToMainPage(nav)}>Cadastro</button>
             </Header>
             <UserDisplay>
                 <h1>Gerenciador de Usuários Cadastrados</h1>
