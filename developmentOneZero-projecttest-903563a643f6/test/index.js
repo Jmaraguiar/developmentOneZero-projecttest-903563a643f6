@@ -1,6 +1,6 @@
 //sample test
 //Para rodar os testes, use: npm test
-//PS: Os testes não estão completos e alguns podem conter erros.
+//PS: Os testes não estão completos e alguns podem comnter erros.
 
 // veja mais infos em:
 //https://mochajs.org/
@@ -8,34 +8,26 @@
 //https://www.chaijs.com/plugins/chai-json-schema/
 //https://developer.mozilla.org/pt-PT/docs/Web/HTTP/Status (http codes)
 
-
-
-import assert from 'assert';
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-import chaiJson from 'chai-json-schema';
-import { get } from 'http';
-import { PORT } from '../src/app.js';
-
-var app = `http://localhost:${PORT}`
+const app =  require('../src/index.js');
 
 console.log(app)
+
+const assert = require('assert');
+const chai = require('chai')
+const chaiHttp = require('chai-http');
+const chaiJson = require('chai-json-schema');
 
 chai.use(chaiHttp);
 chai.use(chaiJson);
 
 const expect = chai.expect;
 
-
 //Define o minimo de campos que o usuário deve ter. Geralmente deve ser colocado em um arquivo separado
 const userSchema = {
     title: "Schema do Usuario, define como é o usuario, linha 24 do teste",
     type: "object",
-    required: ['id','nome', 'email', 'idade'],
+    required: ['nome', 'email', 'idade'],
     properties: {
-        id: {
-            type: 'string'
-        },
         nome: {
             type: 'string'
         },
@@ -72,7 +64,7 @@ describe('Testes da aplicaçao',  () => {
 
     it('deveria ser uma lista vazia de usuarios', function (done) {
         chai.request(app)
-        .get('/users/empty')
+        .get('/users')
         .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
@@ -83,7 +75,7 @@ describe('Testes da aplicaçao',  () => {
 
     it('deveria criar o usuario raupp', function (done) {
         chai.request(app)
-        .post('/signup')
+        .post('/user')
         .send({nome: "raupp", email: "jose.raupp@devoz.com.br", idade: 35})
         .end(function (err, res) {
             expect(err).to.be.null;
@@ -91,38 +83,15 @@ describe('Testes da aplicaçao',  () => {
             done();
         });
     });
-
-    it('deveria retornar mensagem de erro ao criar o usuario raupp por ja existir usuário', function (done) {
-        chai.request(app)
-        .post('/signup')
-        .send({nome: "raupp", email: "jose.raupp@devoz.com.br", idade: 35})
-        .end(function (err, res) {
-            expect(err).to.be.null;
-            expect(res).to.have.status(409);
-            expect(res.body.error).to.be.equal("Este email ja está cadastrado")
-            done();
-        });
-    });
-    
-    it('deveria impedir de criar o usuario Donnald por causa da idade', function (done) {
-        chai.request(app)
-        .post('/signup')
-        .send({nome: "Donnald", email: "duck@devoz.com.br", idade: 10})
-        .end(function (err, res) {
-            expect(err).to.be.null;
-            expect(res).to.have.status(403);
-            expect(res.body.error).to.be.equal("Necessário ter no mínimo 18 anos para se cadastrar")
-            done();
-        });
-    });
+    //...adicionar pelo menos mais 5 usuarios. se adicionar usuario menor de idade, deve dar erro. Ps: não criar o usuario naoExiste
 
     it('o usuario naoExiste não existe no sistema', function (done) {
         chai.request(app)
         .get('/user/naoExiste')
         .end(function (err, res) {
-            expect(err).to.be.null;
-            expect(res.body.error).to.be.equal('User not found'); //possivelmente forma errada de verificar a mensagem de erro
+            expect(err.response.body.error).to.be.equal('User not found'); //possivelmente forma errada de verificar a mensagem de erro
             expect(res).to.have.status(404);
+            expect(res.body).to.be.jsonSchema(userSchema);
             done();
         });
     });
@@ -138,29 +107,9 @@ describe('Testes da aplicaçao',  () => {
         });
     });
 
-    it('as informações do usuário mudaram', function (done) {
-        // O teste deve sempre retornar exatamente os dados de 'newNome','newEmail' e 'newIdade'
-
-        const newNome = 'Maria'
-        const newEmail = 'Maria20@devoz.com.br'
-        const newIdade = 25
-        
-        chai.request(app)
-        .put('/update')
-        .send({id: 'dc797a55-cc99-4439-b2f4-d2a025a6b673' ,nome: newNome, email: newEmail, idade: newIdade})
-        .end(function (err, res){
-            expect(err).to.be.null;
-            expect(res).to.have.status(200);
-            expect(res.body.nome).to.be.equal(newNome)
-            expect(res.body.email).to.be.equal(newEmail)
-            expect(res.body.idade).to.be.equal(newIdade)
-            done();
-        })
-    });
-
     it('deveria excluir o usuario raupp', function (done) {
         chai.request(app)
-        .delete('/del/raupp')
+        .delete('/user/raupp')
         .end(function (err, res) {
             expect(err).to.be.null;
             expect(res).to.have.status(200);
@@ -174,14 +123,15 @@ describe('Testes da aplicaçao',  () => {
         .get('/user/raupp')
         .end(function (err, res) {
             expect(err).to.be.null;
-            expect(res).to.have.status(404);
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.jsonSchema(userSchema);
             done();
         });
     });
 
     it('deveria ser uma lista com pelomenos 5 usuarios', function (done) {
         chai.request(app)
-        .get('/users/all')
+        .get('/users')
         .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
