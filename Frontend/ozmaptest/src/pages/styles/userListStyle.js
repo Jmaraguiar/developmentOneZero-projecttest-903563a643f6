@@ -47,9 +47,14 @@ button{
 `
 
 export const UserDisplay = styled.div`
-    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
     border-radius: 10px;
     padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.712);
 `
 
 
